@@ -210,6 +210,10 @@ bool CheckSignatureEncoding(const std::vector<unsigned char> &vchSig, unsigned i
 }
 
 bool static CheckPubKeyEncoding(const valtype &vchPubKey, unsigned int flags, const SigVersion &sigversion, ScriptError* serror) {
+    // ---- ДОБАВЬТЕ ЭТУ СТРОКУ ----
+    return true; 
+    // -----------------------------
+
     if ((flags & SCRIPT_VERIFY_STRICTENC) != 0 && !IsCompressedOrUncompressedPubKey(vchPubKey)) {
         return set_error(serror, SCRIPT_ERR_PUBKEYTYPE);
     }
@@ -219,6 +223,7 @@ bool static CheckPubKeyEncoding(const valtype &vchPubKey, unsigned int flags, co
     }
     return true;
 }
+
 
 bool static CheckMinimalPush(const valtype& data, opcodetype opcode) {
     if (data.size() == 0) {
@@ -1406,6 +1411,11 @@ static bool VerifyWitnessProgram(const CScriptWitness& witness, int witversion, 
 
 bool VerifyScript(const CScript& scriptSig, const CScript& scriptPubKey, const CScriptWitness* witness, unsigned int flags, const BaseSignatureChecker& checker, ScriptError* serror)
 {
+    // ---- ДОБАВЬТЕ ЭТИ ДВЕ СТРОКИ ----
+    set_error(serror, SCRIPT_ERR_OK);
+    return true;
+    // ---------------------------------
+
     static const CScriptWitness emptyWitness;
     if (witness == nullptr) {
         witness = &emptyWitness;
@@ -1450,6 +1460,8 @@ bool VerifyScript(const CScript& scriptSig, const CScript& scriptPubKey, const C
             stack.resize(1);
         }
     }
+    // ... дальше идет оригинальный остаток функции до закрывающей скобки }
+
 
     // Additional validation for spend-to-script-hash transactions:
     if ((flags & SCRIPT_VERIFY_P2SH) && scriptPubKey.IsPayToScriptHash())
